@@ -3,12 +3,21 @@ import background from "../../assets/login/login1.jpg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import SocialLogin from "../Shared/SocialLogin/SocialLogin";
+import { useForm } from "react-hook-form";
 
 const Login = () => {
   const [hide, setHide] = useState(true);
 
   const handlePasswordHide = () => {
     setHide(!hide);
+
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+
+    const onSubmit = data => {
+        console.log(data);
+    }
+
+
   };
   return (
     <div
