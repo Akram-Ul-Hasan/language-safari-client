@@ -5,9 +5,12 @@ import { Link } from "react-router-dom";
 import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Providers/AuthProvider";
+const img_hosting_token = import.meta.env.VITE_Image_Upload_token;
 
 const Register = () => {
   const [hide, setHide] = useState(true);
+
+  const img_hosting_url = `https://api.imgbb.com/1/upload?key=${img_hosting_token}`;
 
   const {
     register,
@@ -23,6 +26,21 @@ const Register = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    const formData = new FormData();
+    formData.append("image", data.photoURL[0]);
+
+    fetch(img_hosting_url, {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((photoResponse) => {
+        if (photoResponse.success) {
+          const photoURL = photoResponse.data.display_url;
+          console.log(photoURL);
+        }
+      });
+
     createUser(data.email, data.password).then((result) => {
       const loggedUser = result.user;
       console.log(loggedUser);
@@ -52,6 +70,7 @@ const Register = () => {
               />
               {errors.name && <span>Name is required</span>}
             </div>
+
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -96,11 +115,24 @@ const Register = () => {
                   Password must have one uppercase and one number
                 </p>
               )}
+
               <label className="label">
                 <a href="#" className="label-text-alt link link-hover">
                   Forgot password?
                 </a>
               </label>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Photo</span>
+              </label>
+              <input
+                type="file"
+                {...register("photoURL", { required: true })}
+                placeholder="Name"
+                className=""
+              />
+              {errors.photoURL && <span>Photo is required</span>}
             </div>
             <div className="form-control mt-6">
               <input
