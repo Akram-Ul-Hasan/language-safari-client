@@ -37,7 +37,7 @@ const Register = () => {
       }}
     >
       <div className="hero-content ">
-        <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 bg-opacity-70 ">
+        <div className="card w-full shadow-2xl bg-base-100 bg-opacity-70 ">
           <h3 className="text-3xl">Please Sign Up</h3>
           <form onSubmit={handleSubmit(onSubmit)} className="card-body">
             <div className="form-control">
@@ -68,7 +68,7 @@ const Register = () => {
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <div className="flex input input-bordered items-center">
+              <div className="flex input input-bordered items-center justify-between">
                 <input
                   type={hide ? "password" : "text"}
                   {...register("password", {

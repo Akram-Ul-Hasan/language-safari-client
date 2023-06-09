@@ -1,13 +1,16 @@
 import React, { useContext, useState } from "react";
 import background from "../../assets/login/login1.jpg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const [hide, setHide] = useState(true);
   const { login } = useContext(AuthContext);
   const {
@@ -19,7 +22,7 @@ const Login = () => {
   const handlePasswordHide = () => {
     setHide(!hide);
   };
-  
+
   const onSubmit = (data) => {
     console.log(data);
     login(data.email, data.password)
@@ -33,6 +36,7 @@ const Login = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.log(error.message);
