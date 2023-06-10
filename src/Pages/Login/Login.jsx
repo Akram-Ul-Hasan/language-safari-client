@@ -8,11 +8,15 @@ import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
 
 const Login = () => {
+
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
+
   const [hide, setHide] = useState(true);
+  
   const { login } = useContext(AuthContext);
+
   const {
     register,
     handleSubmit,
@@ -104,7 +108,7 @@ const Login = () => {
           <p>
             Don't have an account? <Link to="/sign-up">Sign Up</Link>{" "}
           </p>
-          <div className="divider mx-8">OR</div>
+          
           <SocialLogin></SocialLogin>
         </div>
       </div>

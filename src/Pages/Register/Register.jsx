@@ -145,7 +145,7 @@ const Register = () => {
           <p>
             Don't have an account? <Link to="/sign-up">Sign Up</Link>{" "}
           </p>
-          <div className="divider mx-8">OR</div>
+
           <SocialLogin></SocialLogin>
         </div>
       </div>

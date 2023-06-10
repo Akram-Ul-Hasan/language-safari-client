@@ -23,6 +23,7 @@ export const router = createBrowserRouter([
         {
           path: "classes",
           element: <PrivateRoute><Classes></Classes></PrivateRoute>
+          
         },
         {
           path: "sign-in",

@@ -30,7 +30,8 @@ const NavBar = () => {
       {user ? (
         <>
           <li>
-            <Link to="/">{user?.photoURL}</Link>
+            <Link to="/"><img 
+           className="w-8 h-8 rounded-full" src={user?.photoURL} alt="" /></Link>
           </li>
           <li>
             <button onClick={handleLogOut} className="btn btn-ghost">
