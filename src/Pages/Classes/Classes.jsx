@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import img from "../../assets/Banner/3.jpg";
 import SectionTitle from "../../components/SectionTitle/SectionTitle";
 import ClassCard from "./ClassCard";
+import { AuthContext } from "../../Providers/AuthProvider";
 const Classes = () => {
+  const { user } = useContext(AuthContext);
   const [classes, setClasses] = useState([]);
 
   useEffect(() => {
@@ -11,8 +13,26 @@ const Classes = () => {
       .then((res) => res.json())
       .then((data) => {
         setClasses(data);
+      });
+  }, []);
+
+  const handleEnrollClass = (item) => {
+    console.log(item);
+    if (user) {
+      fetch("http://localhost:5000/carts", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(),
       })
-  }, [])
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+        });
+    }
+  };
+
   return (
     <div>
       <Helmet>
@@ -38,14 +58,16 @@ const Classes = () => {
         </div>
       </div>
 
-      <SectionTitle title="All Classes">
-        
-      </SectionTitle>
+      <SectionTitle title="All Classes"></SectionTitle>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 my-5">
-      {
-        classes.map(item => <ClassCard key={item._id} item={item}></ClassCard> )
-      }
+        {classes.map((item) => (
+          <ClassCard
+            key={item._id}
+            item={item}
+            handleEnrollClass={handleEnrollClass}
+          ></ClassCard>
+        ))}
       </div>
     </div>
   );

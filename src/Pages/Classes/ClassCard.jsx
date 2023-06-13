@@ -1,6 +1,6 @@
 import React from "react";
 
-const ClassCard = ({ item }) => {
+const ClassCard = ({ item, handleEnrollClass }) => {
   const { image, name, instructor_name, available_seat, price } = item;
 
   return (
@@ -14,7 +14,7 @@ const ClassCard = ({ item }) => {
         <p>Available Seat: {available_seat}</p>
         <p>Price: ${price}</p>
         <div className="card-actions justify-end">
-          <button className="btn btn-primary">Enroll now</button>
+          <button onClick={()=>handleEnrollClass(item)} className="btn btn-primary">Enroll now</button>
         </div>
       </div>
     </div>
