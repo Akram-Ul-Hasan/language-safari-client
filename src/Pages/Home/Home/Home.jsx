@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NavBar from "../../Shared/NavBar/NavBar";
 import Banner from "../Banner/Banner";
 import { Helmet } from "react-helmet-async";
@@ -6,10 +6,12 @@ import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import ClassCard from "../../Classes/ClassCard";
 import InstructorCard from "../../Instructors/InstructorCard";
 import ChooseUs from "./ChooseUs";
+import { AuthContext } from "../../../Providers/AuthProvider";
 
 const Home = () => {
   const [classes, setClasses] = useState([]);
   const [instructors, setInstructors] = useState([]);
+  const {user} = useContext(AuthContext)
 
   useEffect(() => {
     fetch(`http://localhost:5000/classes?search=popular`)
@@ -31,13 +33,18 @@ const Home = () => {
 
   const handleEnrollClass = (item) => {
     console.log(item);
+    const { image, name, instructor_name, price } = item;
+    const newItem = {
+      image, name, price, instructor_name,
+      email: user.email
+    }
     if (user) {
       fetch("http://localhost:5000/carts", {
         method: "POST",
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify(),
+        body: JSON.stringify(newItem),
       })
         .then((res) => res.json())
         .then((data) => {

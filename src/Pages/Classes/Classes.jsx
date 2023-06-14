@@ -23,8 +23,11 @@ const Classes = () => {
   }, []);
 
   const handleEnrollClass = (item) => {
-    const { image, name, instructor_name, available_seat, price } = item;
-
+    const { image, name, instructor_name, price } = item;
+    const newItem = {
+      image, name, price, instructor_name,
+      email: user.email
+    }
     
     if (user) {
       fetch("http://localhost:5000/carts", {
@@ -32,7 +35,7 @@ const Classes = () => {
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify(),
+        body: JSON.stringify(newItem),
       })
         .then((res) => res.json())
         .then((data) => {
