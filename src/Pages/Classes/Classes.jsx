@@ -4,9 +4,14 @@ import img from "../../assets/Banner/3.jpg";
 import SectionTitle from "../../components/SectionTitle/SectionTitle";
 import ClassCard from "./ClassCard";
 import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 const Classes = () => {
   const { user } = useContext(AuthContext);
   const [classes, setClasses] = useState([]);
+
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     fetch("http://localhost:5000/classes")
@@ -17,7 +22,9 @@ const Classes = () => {
   }, []);
 
   const handleEnrollClass = (item) => {
-    console.log(item);
+    const { image, name, instructor_name, available_seat, price } = item;
+
+    
     if (user) {
       fetch("http://localhost:5000/carts", {
         method: "POST",
@@ -28,7 +35,29 @@ const Classes = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          if(data.insertedId){
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Your work has been saved',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          }
+          else{
+            Swal.fire({
+              title: 'Please login to Enroll classes',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Login now'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                navigate('/sign-in')
+              }
+            })
+          }
         });
     }
   };
