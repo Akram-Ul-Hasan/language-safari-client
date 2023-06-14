@@ -5,12 +5,13 @@ import SectionTitle from "../../components/SectionTitle/SectionTitle";
 import ClassCard from "./ClassCard";
 import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 const Classes = () => {
   const { user } = useContext(AuthContext);
   const [classes, setClasses] = useState([]);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const Classes = () => {
               confirmButtonText: 'Login now'
             }).then((result) => {
               if (result.isConfirmed) {
-                navigate('/sign-in')
+                navigate('/sign-in',{state:{from: location}})
               }
             })
           }
