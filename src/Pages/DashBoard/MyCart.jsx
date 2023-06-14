@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import useCart from "../../hooks/useCart";
 import TableRow from "./TableRow";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../Providers/AuthProvider";
 
 const MyCart = () => {
+    const {user} = useContext(AuthContext);
   const [cart] = useCart();
   const total = cart.reduce((sum, item) => item.price + sum, 0);
 
@@ -35,9 +37,28 @@ const MyCart = () => {
                 });
         }
       })
-      
-    
   };
+
+  const handlePay = () =>{
+    const order = {
+        name: user?.displayName,
+        email: user?.email,
+        amount: total
+    }
+    fetch('http://localhost:5000/order',{
+        method: "POST",
+        headers: {
+            'content-type' : 'application/json'
+        },
+        body: JSON.stringify(order)
+    })
+    .then(res => res.json())
+    .then(result => {
+        console.log(result);
+        window.location.replace(result.url);
+    })
+  }
+
 
   return (
     <div>
@@ -47,7 +68,7 @@ const MyCart = () => {
       <div>
         <h3>Total Enrolled Class: {cart.length}</h3>
         <h3>Total Price: ${total}</h3>
-        <button className="btn btn-primary ">Pay</button>
+        <button onClick={handlePay} className="btn btn-primary ">Pay</button>
       </div>
       <div>
         <div className="overflow-x-auto w-full">
