@@ -19,14 +19,13 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const { createUser,setUserPhotoAndName } = useContext(AuthContext);
+  const { createUser, setUserPhotoAndName } = useContext(AuthContext);
 
   const handlePasswordHide = () => {
     setHide(!hide);
   };
 
   const onSubmit = (data) => {
-
     let photo;
     const formData = new FormData();
     formData.append("image", data.photoURL[0]);
@@ -39,41 +38,59 @@ const Register = () => {
       .then((photoResponse) => {
         if (photoResponse.success) {
           photo = photoResponse.data.display_url;
-          data.photoURL=photo;
+          data.photoURL = photo;
         }
       });
 
     if (data.password === data.confirmPassword) {
       createUser(data.email, data.password)
-      .then((result) => {
-        const loggedUser = result.user;
-        console.log(data.name, data.photoURL);
-        console.log(loggedUser);
-        
-        setUserPhotoAndName(data.name, data.photoURL)
-        .then(()=>{
-          Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'User Has been created successfully',
-            showConfirmButton: false,
-            timer: 1500
-          })
+        .then((result) => {
+          const loggedUser = result.user;
+          console.log(data.name, data.photoURL);
+          console.log(loggedUser);
+
+          setUserPhotoAndName(data.name, data.photoURL).then(() => {
+            const saveUser = {
+              name : data.name,
+              email: data.email,
+              photo: data.photoURL,
+              gender: data.gender,
+              phone: data.phoneNumber,
+              address: data.address,
+            }
+            fetch("https://language-safari-server-jade.vercel.app/users", {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+              },
+              body: JSON.stringify(saveUser),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                if (data.insertedId) {
+                  Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "User Has been created successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                }
+              });
+          });
+          navigate("/");
         })
-        navigate('/');
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-    }
-    else{
+        .catch((error) => {
+          console.log(error.message);
+        });
+    } else {
       Swal.fire({
-        position: 'top-end',
-        icon: 'warning',
-        title: 'password not matched',
+        position: "top-end",
+        icon: "warning",
+        title: "password not matched",
         showConfirmButton: false,
-        timer: 1500
-      })
+        timer: 1500,
+      });
     }
   };
 
@@ -98,7 +115,9 @@ const Register = () => {
                 placeholder="Name"
                 className="input input-bordered"
               />
-              {errors.name && <span className="text-red-600">Name is required</span>}
+              {errors.name && (
+                <span className="text-red-600">Name is required</span>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
@@ -113,7 +132,9 @@ const Register = () => {
                 <option value="female">Female</option>
                 <option value="other">Other</option>
               </select>
-              {errors.gender && <span className="text-red-600">Gender is required</span>}
+              {errors.gender && (
+                <span className="text-red-600">Gender is required</span>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
@@ -123,13 +144,15 @@ const Register = () => {
                 type="number"
                 {...register("phoneNumber", {
                   required: true,
-                  pattern: /^[0-9]{11}$/, 
+                  pattern: /^[0-9]{11}$/,
                 })}
                 placeholder="Phone Number"
                 className="input input-bordered"
               />
               {errors.phoneNumber && (
-                <span className="text-red-600">Phone Number is required and must be 11 digits</span>
+                <span className="text-red-600">
+                  Phone Number is required and must be 11 digits
+                </span>
               )}
             </div>
             <div className="form-control">
@@ -142,7 +165,9 @@ const Register = () => {
                 placeholder="address"
                 className="input input-bordered"
               />
-              {errors.address && <span className="text-red-600">Address is required</span>}
+              {errors.address && (
+                <span className="text-red-600">Address is required</span>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
@@ -154,7 +179,9 @@ const Register = () => {
                 {...register("email", { required: true })}
                 className="input input-bordered"
               />
-              {errors.email && <span className="text-red-600">Email is required</span>}
+              {errors.email && (
+                <span className="text-red-600">Email is required</span>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
@@ -233,9 +260,10 @@ const Register = () => {
               <input
                 type="file"
                 {...register("photoURL", { required: true })}
-                
               />
-              {errors.photoURL && <span className="text-red-600">Photo is required</span>}
+              {errors.photoURL && (
+                <span className="text-red-600">Photo is required</span>
+              )}
             </div>
             <div className="form-control mt-6">
               <input
