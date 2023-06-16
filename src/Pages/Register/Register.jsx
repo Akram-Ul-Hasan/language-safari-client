@@ -41,10 +41,12 @@ const Register = () => {
         }
       });
 
-    createUser(data.email, data.password).then((result) => {
-      const loggedUser = result.user;
-      console.log(loggedUser);
-    });
+    if (data.password === data.confirmPassword) {
+      createUser(data.email, data.password).then((result) => {
+        const loggedUser = result.user;
+        console.log(loggedUser);
+      });
+    }
   };
 
   return (
@@ -56,7 +58,7 @@ const Register = () => {
     >
       <div className="hero-content ">
         <div className="card w-full shadow-2xl bg-base-100 bg-opacity-70 ">
-          <h3 className="text-3xl">Please Sign Up</h3>
+          <h3 className="text-3xl ml-8 mt-8">Please Sign Up</h3>
           <form onSubmit={handleSubmit(onSubmit)} className="card-body">
             <div className="form-control">
               <label className="label">
@@ -68,9 +70,52 @@ const Register = () => {
                 placeholder="Name"
                 className="input input-bordered"
               />
-              {errors.name && <span>Name is required</span>}
+              {errors.name && <span className="text-red-600">Name is required</span>}
             </div>
-
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Gender</span>
+              </label>
+              <select
+                {...register("gender", { required: true })}
+                className="input input-bordered"
+              >
+                <option value="">Select</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+              {errors.gender && <span className="text-red-600">Gender is required</span>}
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Phone Number</span>
+              </label>
+              <input
+                type="number"
+                {...register("phoneNumber", {
+                  required: true,
+                  pattern: /^[0-9]{11}$/, 
+                })}
+                placeholder="Phone Number"
+                className="input input-bordered"
+              />
+              {errors.phoneNumber && (
+                <span className="text-red-600">Phone Number is required and must be 11 digits</span>
+              )}
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Address</span>
+              </label>
+              <input
+                type="text"
+                {...register("address", { required: true })}
+                placeholder="address"
+                className="input input-bordered"
+              />
+              {errors.address && <span className="text-red-600">Address is required</span>}
+            </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -81,7 +126,7 @@ const Register = () => {
                 {...register("email", { required: true })}
                 className="input input-bordered"
               />
-              {errors.email && <span>Email is required</span>}
+              {errors.email && <span className="text-red-600">Email is required</span>}
             </div>
             <div className="form-control">
               <label className="label">
@@ -96,7 +141,6 @@ const Register = () => {
                     pattern: /(?=.*[A-Z])(?=.*?[0-9])/,
                   })}
                   placeholder="password"
-                  className=""
                 />
 
                 <button onClick={handlePasswordHide}>
@@ -111,6 +155,38 @@ const Register = () => {
                 <p className="text-red-600">Password must be 6 characters</p>
               )}
               {errors.password?.type === "pattern" && (
+                <p className="text-red-600">
+                  Password must have one uppercase and one number
+                </p>
+              )}
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Confirm Password</span>
+              </label>
+              <div className="flex input input-bordered items-center justify-between">
+                <input
+                  type={hide ? "password" : "text"}
+                  {...register("confirmPassword", {
+                    required: true,
+                    minLength: 6,
+                    pattern: /(?=.*[A-Z])(?=.*?[0-9])/,
+                  })}
+                  placeholder="confirm password"
+                />
+
+                <button onClick={handlePasswordHide}>
+                  {hide ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>}
+                </button>
+              </div>
+
+              {errors.confirmPassword?.type === "required" && (
+                <p className="text-red-600">Password is required</p>
+              )}
+              {errors.confirmPassword?.type === "minLength" && (
+                <p className="text-red-600">Password must be 6 characters</p>
+              )}
+              {errors.confirmPassword?.type === "pattern" && (
                 <p className="text-red-600">
                   Password must have one uppercase and one number
                 </p>
@@ -132,7 +208,7 @@ const Register = () => {
                 placeholder="Name"
                 className=""
               />
-              {errors.photoURL && <span>Photo is required</span>}
+              {errors.photoURL && <span className="text-red-600">Photo is required</span>}
             </div>
             <div className="form-control mt-6">
               <input
@@ -142,7 +218,7 @@ const Register = () => {
               />
             </div>
           </form>
-          <p>
+          <p className="ml-8">
             Don't have an account? <Link to="/sign-up">Sign Up</Link>{" "}
           </p>
 

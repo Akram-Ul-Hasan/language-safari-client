@@ -21,7 +21,7 @@ const MyCart = () => {
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`http://localhost:5000/carts/${id}`, {
+            fetch(`https://language-safari-server-jade.vercel.app/carts/${id}`, {
                 method: "DELETE",
               })
                 .then((res) => res.json())
@@ -45,7 +45,7 @@ const MyCart = () => {
         email: user?.email,
         amount: total
     }
-    fetch('http://localhost:5000/order',{
+    fetch('https://language-safari-server-jade.vercel.app/order',{
         method: "POST",
         headers: {
             'content-type' : 'application/json'

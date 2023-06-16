@@ -15,7 +15,7 @@ const Classes = () => {
 
 
   useEffect(() => {
-    fetch("http://localhost:5000/classes")
+    fetch("https://language-safari-server-jade.vercel.app/classes")
       .then((res) => res.json())
       .then((data) => {
         setClasses(data);
@@ -30,7 +30,7 @@ const Classes = () => {
     }
     
     if (user) {
-      fetch("http://localhost:5000/carts", {
+      fetch("https://language-safari-server-jade.vercel.app/carts", {
         method: "POST",
         headers: {
           "content-type": "application/json",

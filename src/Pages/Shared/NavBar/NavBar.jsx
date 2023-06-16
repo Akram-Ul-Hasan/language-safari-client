@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import logo from '../../../assets/logo.png'
 
 const NavBar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -81,10 +82,10 @@ const NavBar = () => {
         </div>
         <Link
           to="/"
-          className="text-blue-900 ms-6 p-10
+          className="text-blue-900 ms-6 
          text-3xl  font-bold"
-        >
-          Language Safari
+        ><div className="flex"><img className="h-10 w-10" src={logo} alt="" />
+        <p>Language Safari</p></div>
         </Link>
       </div>
       <div className="navbar-end hidden lg:flex">

@@ -14,7 +14,7 @@ const Home = () => {
   const {user} = useContext(AuthContext)
 
   useEffect(() => {
-    fetch(`http://localhost:5000/classes?search=popular`)
+    fetch(`https://language-safari-server-jade.vercel.app/classes?search=popular`)
       .then((res) => res.json())
       .then((data) => {
         setClasses(data);
@@ -22,7 +22,7 @@ const Home = () => {
       });
   }, []);
   useEffect(() => {
-    fetch(`http://localhost:5000/instructors?search=popular`)
+    fetch(`https://language-safari-server-jade.vercel.app/instructors?search=popular`)
       .then((res) => res.json())
       .then((data) => {
         setInstructors(data);
@@ -39,7 +39,7 @@ const Home = () => {
       email: user.email
     }
     if (user) {
-      fetch("http://localhost:5000/carts", {
+      fetch("https://language-safari-server-jade.vercel.app/carts", {
         method: "POST",
         headers: {
           "content-type": "application/json",

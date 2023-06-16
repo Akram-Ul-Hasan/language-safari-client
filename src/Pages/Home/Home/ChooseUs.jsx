@@ -16,7 +16,7 @@ const ChooseUs = () => {
 
   return (
     <div
-      className="hero  h-[500px] my-10"
+      className="hero   my-10"
       style={{
         backgroundImage: `url(${img1})`,
       }}
