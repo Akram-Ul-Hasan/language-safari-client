@@ -53,10 +53,6 @@ const Register = () => {
             const saveUser = {
               name : data.name,
               email: data.email,
-              photo: data.photoURL,
-              gender: data.gender,
-              phone: data.phoneNumber,
-              address: data.address,
             }
             fetch("https://language-safari-server-jade.vercel.app/users", {
               method: "POST",
