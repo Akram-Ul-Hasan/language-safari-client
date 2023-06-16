@@ -1,15 +1,16 @@
 import React, { useContext, useState } from "react";
 import background from "../../assets/login/login1.jpg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SocialLogin from "../Shared/SocialLogin/SocialLogin";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 const img_hosting_token = import.meta.env.VITE_Image_Upload_token;
 
 const Register = () => {
   const [hide, setHide] = useState(true);
-
+  const navigate = useNavigate();
   const img_hosting_url = `https://api.imgbb.com/1/upload?key=${img_hosting_token}`;
 
   const {
@@ -18,14 +19,15 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const { createUser } = useContext(AuthContext);
+  const { createUser,setUserPhotoAndName } = useContext(AuthContext);
 
   const handlePasswordHide = () => {
     setHide(!hide);
   };
 
   const onSubmit = (data) => {
-    console.log(data);
+
+    let photo;
     const formData = new FormData();
     formData.append("image", data.photoURL[0]);
 
@@ -36,16 +38,42 @@ const Register = () => {
       .then((res) => res.json())
       .then((photoResponse) => {
         if (photoResponse.success) {
-          const photoURL = photoResponse.data.display_url;
-          console.log(photoURL);
+          photo = photoResponse.data.display_url;
+          data.photoURL=photo;
         }
       });
 
     if (data.password === data.confirmPassword) {
-      createUser(data.email, data.password).then((result) => {
+      createUser(data.email, data.password)
+      .then((result) => {
         const loggedUser = result.user;
+        console.log(data.name, data.photoURL);
         console.log(loggedUser);
+        
+        setUserPhotoAndName(data.name, data.photoURL)
+        .then(()=>{
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'User Has been created successfully',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        })
+        navigate('/');
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
+    }
+    else{
+      Swal.fire({
+        position: 'top-end',
+        icon: 'warning',
+        title: 'password not matched',
+        showConfirmButton: false,
+        timer: 1500
+      })
     }
   };
 
@@ -205,8 +233,7 @@ const Register = () => {
               <input
                 type="file"
                 {...register("photoURL", { required: true })}
-                placeholder="Name"
-                className=""
+                
               />
               {errors.photoURL && <span className="text-red-600">Photo is required</span>}
             </div>
