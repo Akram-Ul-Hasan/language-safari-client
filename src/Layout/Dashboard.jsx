@@ -53,7 +53,7 @@ const Dashboard = () => {
             ) : (
               <>
                 <li>
-                  <NavLink to="/dashboard/">
+                  <NavLink to="/dashboard/addclass">
                     <MdClass></MdClass> Add a Class
                   </NavLink>
                 </li>

@@ -7,6 +7,7 @@ import ClassCard from "../../Classes/ClassCard";
 import InstructorCard from "../../Instructors/InstructorCard";
 import ChooseUs from "./ChooseUs";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const Home = () => {
   const [classes, setClasses] = useState([]);
@@ -49,6 +50,15 @@ const Home = () => {
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
+          if(data.insertedId){
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'This class has been saved into cart',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          }
         });
     }
   };

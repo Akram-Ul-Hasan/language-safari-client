@@ -189,7 +189,7 @@ const Register = () => {
                   {...register("password", {
                     required: true,
                     minLength: 6,
-                    pattern: /(?=.*[A-Z])(?=.*?[0-9])/,
+                    pattern: /(?=.*[A-Z])(?=.*[\W_])/,
                   })}
                   placeholder="password"
                 />
@@ -207,7 +207,7 @@ const Register = () => {
               )}
               {errors.password?.type === "pattern" && (
                 <p className="text-red-600">
-                  Password must have one uppercase and one number
+                  Password must have one uppercase and one symbol
                 </p>
               )}
             </div>
@@ -221,7 +221,7 @@ const Register = () => {
                   {...register("confirmPassword", {
                     required: true,
                     minLength: 6,
-                    pattern: /(?=.*[A-Z])(?=.*?[0-9])/,
+                    pattern: /(?=.*[A-Z])(?=.*[\W_])/,
                   })}
                   placeholder="confirm password"
                 />
@@ -239,7 +239,7 @@ const Register = () => {
               )}
               {errors.confirmPassword?.type === "pattern" && (
                 <p className="text-red-600">
-                  Password must have one uppercase and one number
+                  Password must have one uppercase and one symbol
                 </p>
               )}
 
