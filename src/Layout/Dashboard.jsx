@@ -7,6 +7,8 @@ import { MdClass } from 'react-icons/md';
 
 
 const Dashboard = () => {
+
+  const isAdmin = true;
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -24,13 +26,27 @@ const Dashboard = () => {
       <div className="drawer-side ">
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
         <ul className="menu p-4 w-80 h-full bg-blue-400 text-base-content">
-          {/* Sidebar content here */}
+          {
+            isAdmin ? <>
+            <li>
+            <NavLink to="/dashboard/"><MdClass></MdClass> Manage Classes</NavLink>
+          </li>
           <li>
+            <NavLink to="/dashboard/allusers"><FcPaid></FcPaid> Manage Users</NavLink>
+          </li>
+
+            </> : 
+            <>
+            <li>
             <NavLink to="/dashboard/mycart"><MdClass></MdClass> My Classes</NavLink>
           </li>
           <li>
-            <NavLink to="/instructors"><FcPaid></FcPaid> My Enrolled Class</NavLink>
+            <NavLink to="/"><FcPaid></FcPaid> My Enrolled Class</NavLink>
           </li>
+            
+            </>
+          }
+          
           <div className="divider"></div> 
           <li>
             <NavLink to="/"><FaHome></FaHome> Home</NavLink>
